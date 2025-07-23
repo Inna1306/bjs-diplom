@@ -75,7 +75,6 @@ ApiConnector.getFavorites((response) => {
 });
 
 favoritesWidget.addUserCallback = function (data) {
-    // data: {id, name}
     ApiConnector.addUserToFavorites(data, (response) => {
         if (response.success) {
             updateFavorites();
@@ -86,9 +85,8 @@ favoritesWidget.addUserCallback = function (data) {
     });
 };
 
-// 5.2. Удаление из избранного
+
 favoritesWidget.removeUserCallback = function (data) {
-    // data: {id}
     ApiConnector.removeUserFromFavorites(data, (response) => {
         if (response.success) {
             updateFavorites();
