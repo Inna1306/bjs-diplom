@@ -74,40 +74,27 @@ ApiConnector.getFavorites((response) => {
     }
 });
 
-favoritesWidget.addUserCallback = (data) => {
+favoritesWidget.addUserCallback = function (data) {
+    // data: {id, name}
     ApiConnector.addUserToFavorites(data, (response) => {
         if (response.success) {
-            ApiConnector.getFavorites((response) => {
-                if (response.success) {
-                    favoritesWidget.clearTable();
-                    favoritesWidget.fillTable(response.data);
-                    moneyManager.updateUsersList(response.data);
-                } else {
-                    console.error("Ошибка при обновлении списка избранного");
-                }
-            });
-            favoritesWidget.setMessage(true, "Пользователь успешно добавлен в избранное");
+            updateFavorites();
+            favoritesWidget.setMessage(true, 'Пользователь добавлен');
         } else {
-            favoritesWidget.setMessage(false, response.error || "Ошибка при добавлении пользователя в избранное");
+            favoritesWidget.setMessage(false, response.error);
         }
     });
 };
 
-favoritesWidget.removeUserCallback = (data) => {
+// 5.2. Удаление из избранного
+favoritesWidget.removeUserCallback = function (data) {
+    // data: {id}
     ApiConnector.removeUserFromFavorites(data, (response) => {
         if (response.success) {
-            ApiConnector.getFavorites((response) => {
-                if (response.success) {
-                    favoritesWidget.clearTable();
-                    favoritesWidget.fillTable(response.data);
-                    moneyManager.updateUsersList(response.data);
-                } else {
-                    console.error("Ошибка при обновлении списка избранного");
-                }
-            });
-            favoritesWidget.setMessage(true, "Пользователь успешно удален из избранного");
+            updateFavorites();
+            favoritesWidget.setMessage(true, 'Пользователь удален');
         } else {
-            favoritesWidget.setMessage(false, response.error || "Ошибка при удалении пользователя из избранного");
+            favoritesWidget.setMessage(false, response.error);
         }
     });
-};
+}
