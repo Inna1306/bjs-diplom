@@ -66,14 +66,16 @@ moneyManager.sendMoneyCallback = (data) => {
 
 const favoritesWidget = new FavoritesWidget();
 
-ApiConnector.getFavorites((response) => {
-    if (response.success) {
-        favoritesWidget.clearTable();
-        favoritesWidget.fillTable(response.data);
-        moneyManager.updateUsersList(response.data);
-    }
-});
-
+function updateFavorites() {
+    ApiConnector.getFavorites((response) => {
+        if (response.success) {
+            favoritesWidget.clearTable();
+            favoritesWidget.fillTable(response.data);
+            moneyManager.updateUsersList(response.data);
+        }
+    });
+};
+updateFavorites(); //загрузка уже существующего списка избранного
 favoritesWidget.addUserCallback = function (data) {
     ApiConnector.addUserToFavorites(data, (response) => {
         if (response.success) {
