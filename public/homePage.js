@@ -1,3 +1,5 @@
+'use strict';
+
 const logoutButton = new LogoutButton();
 
 logoutButton.action = () => {
@@ -56,10 +58,10 @@ moneyManager.conversionMoneyCallback = (data) => {
 moneyManager.sendMoneyCallback = (data) => {
     ApiConnector.transferMoney(data, (response) => {
         if (response.success) {
-            ProfileWidget.showProfile(response, data);
+            ProfileWidget.showProfile(response.data);
             moneyManager.setMessage(true, "Деньги переведены");
         } else {
-            moneyManager.setMessage(false, response.error || "Ошибка при переводе средств");
+            moneyManager.setMessage(response.success, response.error || "Ошибка при переводе средств");
         }
     });
 };
@@ -75,7 +77,7 @@ function updateFavorites() {
         }
     });
 };
-updateFavorites(); //загрузка уже существующего списка избранного
+
 favoritesWidget.addUserCallback = function (data) {
     ApiConnector.addUserToFavorites(data, (response) => {
         if (response.success) {
