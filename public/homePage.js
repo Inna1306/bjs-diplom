@@ -77,26 +77,29 @@ function updateFavorites() {
         }
     });
 };
+updateFavorites();
+favoritesWidget.addUserCallback = (data) => {
 
-favoritesWidget.addUserCallback = function (data) {
     ApiConnector.addUserToFavorites(data, (response) => {
         if (response.success) {
-            updateFavorites();
-            favoritesWidget.setMessage(true, 'Пользователь добавлен');
+            favoritesWidget.clearTable();
+            favoritesWidget.fillTable(response.data);
+            moneyManager.updateUsersList(response.data);
         } else {
-            favoritesWidget.setMessage(false, response.error);
+            favoritesWidget.setMessage(response.success, response.error);
         }
     });
 };
 
+favoritesWidget.removeUserCallback = (data) => {
 
-favoritesWidget.removeUserCallback = function (data) {
     ApiConnector.removeUserFromFavorites(data, (response) => {
         if (response.success) {
-            updateFavorites();
-            favoritesWidget.setMessage(true, 'Пользователь удален');
+            favoritesWidget.clearTable();
+            favoritesWidget.fillTable(response.data);
+            moneyManager.updateUsersList(response.data);
         } else {
-            favoritesWidget.setMessage(false, response.error);
+            favoritesWidget.setMessage(response.success, response.error);
         }
     });
-}
+};
